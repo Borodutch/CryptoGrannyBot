@@ -1,9 +1,9 @@
 {
-  "name": "telegraf-template",
+  "name": "crypto-granny-bot",
   "version": "1.0.0",
-  "description": "Telegram bot template based on telegraf.js.org",
+  "description": "Crypto arbitrage alert bot",
   "main": "dist/app.js",
-  "repository": "https://github.com/backmeupplz/telegraf-template",
+  "repository": "https://github.com/Borodutch/CryptoGrannyBot",
   "author": "backmeupplz <backmeupplz@gmail.com>",
   "license": "MIT",
   "private": false,
@@ -16,18 +16,18 @@
   },
   "devDependencies": {
     "@types/mongoose": "^5.10.18",
-    "@types/node": "^15.12.1",
+    "@types/node": "^16.4.13",
     "concurrently": "^6.2.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.12"
   },
   "dependencies": {
-    "@typegoose/typegoose": "^7.6.1",
+    "@typegoose/typegoose": "^8.1.1",
     "dotenv": "^10.0.0",
     "module-alias": "^2.2.2",
-    "mongoose": "5.10.18",
-    "telegraf": "^4.3.0",
+    "mongoose": "5.13.5",
+    "telegraf": "^4.4.1",
     "telegraf-i18n": "^6.6.0",
-    "typescript": "^4.3.2"
+    "typescript": "^4.3.5"
   },
   "_moduleAliases": {
     "@": "dist"

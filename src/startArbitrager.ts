@@ -49,7 +49,12 @@ function checkArbitrage() {
         highestFee = fee
       }
     }
-    if (lowestAsk * (1 + lowestFee) < highestBid * (1 - highestFee)) {
+    const lowestAskWithFee = lowestAsk * (1 + lowestFee)
+    const highestBidWithFee = highestBid * (1 - highestFee)
+    if (
+      ((highestBidWithFee - lowestAskWithFee) / lowestAskWithFee) * 100 >
+      0.01
+    ) {
       potentialArbitrages.push({
         symbol,
         lowestAsk,

@@ -6,4 +6,5 @@ mongoose.connect(process.env.MONGO, {
 })
 mongoose.set('useCreateIndex', true)
 
+export * from './Deal'
 export * from './User'

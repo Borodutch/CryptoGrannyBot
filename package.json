@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@typegoose/typegoose": "^8.1.1",
+    "ccxt": "^1.54.58",
     "dotenv": "^10.0.0",
     "module-alias": "^2.2.2",
     "mongoose": "5.13.5",

@@ -27,8 +27,8 @@ export async function reportDealToLive(deal: Deal) {
     '/',
     '_'
   )} +${percentageBetweenHighestAndLowest}%${
-    +percentageBetweenHighestAndLowest > 1 ? ' #one_plus' : ''
-  }${+percentageBetweenHighestAndLowest > 10 ? ' #ten_plus' : ''}
+    +percentageBetweenHighestAndLowest >= 1 ? ' #one_plus' : ''
+  }${+percentageBetweenHighestAndLowest >= 10 ? ' #ten_plus' : ''}
 <b>${deal.buyExchange}</b> (${deal.lowestAsk}) ➡️ <b>${
     deal.sellExchange
   }</b> (${deal.highestBid})

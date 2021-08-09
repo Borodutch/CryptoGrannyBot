@@ -26,7 +26,7 @@ export class Deal {
   highestFee: number
   @prop({ required: true, type: () => ExchangePrices })
   exchangePrices: ExchangePrices[]
-  @prop({ required: true, default: false })
+  @prop({ required: true, default: false, index: true })
   sentToFreeChannel: boolean
 }
 

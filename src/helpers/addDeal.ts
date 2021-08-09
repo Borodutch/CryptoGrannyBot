@@ -1,6 +1,6 @@
 import { DealModel } from '@/models'
 import { PotentialArbitrage } from '@/models/PotentialArbitrage'
-import { reportDealToLive } from '@/helpers/alertBot'
+import { reportDeal } from '@/helpers/alertBot'
 
 export async function addDeal(potentialArbitrage: PotentialArbitrage) {
   const anHourAgo = new Date()
@@ -24,5 +24,5 @@ export async function addDeal(potentialArbitrage: PotentialArbitrage) {
     lowestFee: potentialArbitrage.lowestFee,
     highestFee: potentialArbitrage.highestFee,
   })
-  return reportDealToLive(deal)
+  return reportDeal(deal, false)
 }

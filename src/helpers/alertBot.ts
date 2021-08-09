@@ -16,14 +16,14 @@ function listOrderedExchanges(deal: Deal) {
     .join('\n')}`
 }
 
-export async function reportDealToLive(deal: Deal) {
+export async function reportDeal(deal: Deal, free: boolean) {
   const highestBidWithFee = deal.highestBid * (1 - deal.highestFee)
   const lowestAskWithFee = deal.lowestAsk * (1 + deal.lowestFee)
   const percentageBetweenHighestAndLowest = (
     ((highestBidWithFee - lowestAskWithFee) / lowestAskWithFee) *
     100
   ).toFixed(2)
-  const message = `#${deal.pair.replace(
+  const message = `${free ? '<b>1 hour ago:</b>\n' : ''}#${deal.pair.replace(
     '/',
     '_'
   )} +${percentageBetweenHighestAndLowest}%${
@@ -35,10 +35,20 @@ export async function reportDealToLive(deal: Deal) {
 ${listOrderedExchanges(deal)}`
   try {
     await alertBot.telegram.sendMessage(
-      process.env.ALERT_LIVE_CHAT_ID,
+      free ? process.env.ALERT_FREE_CHAT_ID : process.env.ALERT_LIVE_CHAT_ID,
       message,
       {
         parse_mode: 'HTML',
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: 'Remove 1 hour delay',
+                url: 'https://t.me/CryptoGrannyBot?start=en',
+              },
+            ],
+          ],
+        },
       }
     )
   } catch (e) {

@@ -1,5 +1,10 @@
 name: English
 help: |
-  <b>Bot</b> allows you to see how Telegraf bots can be built.
+  Hi there! To remove 1 hour delay, contact @borodutch.
+
+  /help — Show this message
+  /privacy — Privacy policy
+  /terms — Terms of service
+  /language — Change language
 language: Please, select the language.
-language_selected: <b>Bot</b> now speaks English.
+language_selected: <b>Crypto Granny</b> now speaks English.

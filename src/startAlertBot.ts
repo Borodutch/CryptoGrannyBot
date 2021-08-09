@@ -32,4 +32,4 @@ async function checkFreeAndReport() {
   }
 }
 
-setInterval(checkFreeAndReport, 10 * 60 * 1000)
+setInterval(checkFreeAndReport, 10 * 1000)

@@ -4,6 +4,15 @@ import { ExtraReplyMessage } from 'telegraf/typings/telegram-types'
 
 export const alertBot = new Telegraf(process.env.ALERT_TOKEN)
 
+const channels = {
+  free: process.env.ALERT_FREE_CHAT_ID,
+  freeOnePlus: process.env.ALERT_FREE_ONE_PLUS_CHAT_ID,
+  freeTenPlus: process.env.ALERT_FREE_TEN_PLUS_CHAT_ID,
+  live: process.env.ALERT_LIVE_CHAT_ID,
+  liveOnePlus: process.env.ALERT_LIVE_ONE_PLUS_CHAT_ID,
+  liveTenPlus: process.env.ALERT_LIVE_TEN_PLUS_CHAT_ID,
+}
+
 function listOrderedExchanges(deal: Deal) {
   if (deal.exchangePrices.length < 3) {
     return ''
@@ -24,6 +33,39 @@ export async function reportDeal(deal: Deal, free: boolean) {
     ((highestBidWithFee - lowestAskWithFee) / lowestAskWithFee) *
     100
   ).toFixed(2)
+  // Send to the main channel
+  sendDealToChannel(
+    deal,
+    free,
+    free ? channels.free : channels.live,
+    percentageBetweenHighestAndLowest
+  )
+  // Send to the one plus channel
+  if (+percentageBetweenHighestAndLowest >= 1) {
+    sendDealToChannel(
+      deal,
+      free,
+      free ? channels.freeOnePlus : channels.liveOnePlus,
+      percentageBetweenHighestAndLowest
+    )
+  }
+  // Send to the ten plus channel
+  if (+percentageBetweenHighestAndLowest >= 10) {
+    sendDealToChannel(
+      deal,
+      free,
+      free ? channels.freeTenPlus : channels.liveTenPlus,
+      percentageBetweenHighestAndLowest
+    )
+  }
+}
+
+async function sendDealToChannel(
+  deal: Deal,
+  free: boolean,
+  channel: string,
+  percentageBetweenHighestAndLowest: string
+) {
   const message = `${free ? '<b>1 hour ago:</b>\n' : ''}#${deal.pair.replace(
     '/',
     '_'
@@ -48,11 +90,7 @@ ${listOrderedExchanges(deal)}`
     }
   }
   try {
-    await alertBot.telegram.sendMessage(
-      free ? process.env.ALERT_FREE_CHAT_ID : process.env.ALERT_LIVE_CHAT_ID,
-      message,
-      options
-    )
+    await alertBot.telegram.sendMessage(channel, message, options)
   } catch (e) {
     console.error('Error adding deal to live channel', e.message || e)
   }

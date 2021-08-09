@@ -12,7 +12,8 @@ export function startBot() {
   bot.use(attachUser)
   bot.use(i18n.middleware(), attachI18N)
   // Commands
-  bot.command(['help', 'start'], sendHelp)
+  bot.start(sendHelp)
+  bot.help(sendHelp)
   bot.command('privacy', (ctx) => ctx.reply('https://privacy.borodutch.com'))
   bot.command('terms', (ctx) => ctx.reply('https://terms.borodutch.com'))
   bot.command('language', sendLanguage)

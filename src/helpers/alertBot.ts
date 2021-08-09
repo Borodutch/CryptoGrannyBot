@@ -1,5 +1,6 @@
 import { Deal } from '@/models/Deal'
 import { Telegraf } from 'telegraf'
+import { ExtraReplyMessage } from 'telegraf/typings/telegram-types'
 
 export const alertBot = new Telegraf(process.env.ALERT_TOKEN)
 
@@ -33,23 +34,24 @@ export async function reportDeal(deal: Deal, free: boolean) {
     deal.sellExchange
   }</b> (${deal.highestBid})
 ${listOrderedExchanges(deal)}`
+  const options = { parse_mode: 'HTML' } as ExtraReplyMessage
+  if (free) {
+    options.reply_markup = {
+      inline_keyboard: [
+        [
+          {
+            text: 'Remove 1 hour delay',
+            url: 'https://t.me/CryptoGrannyBot?start=en',
+          },
+        ],
+      ],
+    }
+  }
   try {
     await alertBot.telegram.sendMessage(
       free ? process.env.ALERT_FREE_CHAT_ID : process.env.ALERT_LIVE_CHAT_ID,
       message,
-      {
-        parse_mode: 'HTML',
-        reply_markup: {
-          inline_keyboard: [
-            [
-              {
-                text: 'Remove 1 hour delay',
-                url: 'https://t.me/CryptoGrannyBot?start=en',
-              },
-            ],
-          ],
-        },
-      }
+      options
     )
   } catch (e) {
     console.error('Error adding deal to live channel', e.message || e)

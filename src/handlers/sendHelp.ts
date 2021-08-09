@@ -1,7 +1,7 @@
 import { Context } from 'telegraf'
 
 export async function sendHelp(ctx: Context) {
-  console.log((ctx as any).startPayload)
+  console.log(ctx.update)
   const startPayload = (ctx as any).startPayload as string
   if (startPayload && startPayload === 'en') {
     const user = ctx.dbuser

@@ -7,7 +7,11 @@ dotenv.config({ path: `${__dirname}/../.env` })
 import { startBot } from '@/startBot'
 import { startArbitrager } from '@/startArbitrager'
 import { startAlertBot } from '@/startAlertBot'
+import { startServer } from '@/startServer'
+import { startMongo } from '@/models'
 
+startMongo()
 startBot()
 startAlertBot()
 startArbitrager()
+startServer()

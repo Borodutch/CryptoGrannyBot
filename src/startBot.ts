@@ -5,6 +5,8 @@ import { i18n, attachI18N } from '@/helpers/i18n'
 import { setLanguage, sendLanguage } from '@/handlers/language'
 import { attachUser } from '@/middlewares/attachUser'
 import { localeActions } from '@/handlers/language'
+import { sendReturns } from '@/handlers/sendReturns'
+import { sendSubscription } from '@/handlers/sendSubscription'
 
 export function startBot() {
   // Middlewares
@@ -16,9 +18,12 @@ export function startBot() {
   bot.help(sendHelp)
   bot.command('privacy', (ctx) => ctx.reply('https://privacy.borodutch.com'))
   bot.command('terms', (ctx) => ctx.reply('https://terms.borodutch.com'))
+  bot.command('returns', sendReturns)
   bot.command('language', sendLanguage)
+  bot.command('subscription', sendSubscription)
   // Actions
   bot.action(localeActions, setLanguage)
+  bot.action('subscription', sendSubscription)
   // Errors
   bot.catch(console.error)
   // Start bot

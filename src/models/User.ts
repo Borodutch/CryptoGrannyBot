@@ -1,15 +1,26 @@
 import { prop, getModelForClass } from '@typegoose/typegoose'
 
+export enum SubscriptionStatus {
+  inactive = 'inactive',
+  active = 'active',
+  lifetime = 'lifetime',
+}
+
 export class User {
   @prop({ required: true, index: true, unique: true })
   id: number
 
   @prop({ required: true, default: 'en' })
   language: string
+
+  @prop()
+  subscriptionId: string
+  @prop({ enum: SubscriptionStatus, default: SubscriptionStatus.inactive })
+  subscriptionStatus: SubscriptionStatus
 }
 
 // Get User model
-const UserModel = getModelForClass(User, {
+export const UserModel = getModelForClass(User, {
   schemaOptions: { timestamps: true },
 })
 

@@ -18,13 +18,17 @@ export async function setLanguage(ctx: Context) {
     const anyI18N = ctx.i18n as any
     anyI18N.locale(ctx.callbackQuery.data)
 
-    await ctx.telegram.editMessageText(
-      message.chat.id,
-      message.message_id,
-      undefined,
-      ctx.i18n.t('language_selected'),
-      { parse_mode: 'HTML' }
-    )
+    try {
+      await ctx.telegram.editMessageText(
+        message.chat.id,
+        message.message_id,
+        undefined,
+        ctx.i18n.t('language_selected'),
+        { parse_mode: 'HTML' }
+      )
+    } catch (e) {
+      console.error(`Failed to edit message text`, e.message || e)
+    }
   }
 }
 

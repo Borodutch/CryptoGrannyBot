@@ -1,10 +1,26 @@
 name: English
 help: |
-  Hi there! To remove 1 hour delay, contact @borodutch.
+  Hi there! To get access to the channels without delays or to manage your subscription use /subscription.
 
   /help — Show this message
+  /language — Change language
   /privacy — Privacy policy
   /terms — Terms of service
-  /language — Change language
+  /returns — Returns policy
+  /subscription — Manage subscription
+
+  Any questions, suggestions or feedback? Please contact me at @borodutch.
 language: Please, select the language.
 language_selected: <b>Crypto Granny</b> now speaks English.
+returns: 30 day risk-free refund is offered. Just request a refund within 30 days of the purchase date by sending the request to either cryptogranny@borodutch.com or @borodutch.
+buy_subscription_button: Buy subscription
+manage_subscription_button: Manage subscription
+lifetime_subscription: Thank you a lot for your support! You have a lifetime subscription. Please, use the buttons below to join private channels. The invite links are valid for 10 minutes and only you can use them. If they expire, feel free to request new ones with /subscription.
+active_subscription: Thank you a lot for your support! You have an active subscription. Please, use the buttons below to join private channels. The invite links are valid for 10 minutes and only you can use them. If they expire, feel free to request new ones with /subscription. If you want to manage your subscription, please, use the manage button below.
+inactive_subscription: |
+  In order to access the channels without the 1 hour delay, you have to purchase a subscription. It's either $50 per month, or $400 per year, or $1800 once for a lifetime access.
+
+  There is a risk-free 30 day refund policy, learn more in /returns. After you purchase a subscription, you will get invite links to the private channels without the 1 hour delay. Address any questions to @borodutch.
+montly_subscription_button: $50/month
+yearly_subscription_button: $400/month
+lifetime_subscription_button: $1800 once

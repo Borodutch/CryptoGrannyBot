@@ -3,6 +3,7 @@ import { exchangesMap, tickers } from '@/helpers/ccxt'
 import { addDeal } from '@/helpers/addDeal'
 
 export function startArbitrager() {
+  console.log('Arbitrager launched')
   setInterval(checkArbitrage, 5000)
 }
 

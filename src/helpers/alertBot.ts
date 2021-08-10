@@ -1,17 +1,9 @@
+import { channels } from '@/helpers/channels'
 import { Deal } from '@/models/Deal'
 import { Telegraf } from 'telegraf'
 import { ExtraReplyMessage } from 'telegraf/typings/telegram-types'
 
 export const alertBot = new Telegraf(process.env.ALERT_TOKEN)
-
-const channels = {
-  free: process.env.ALERT_FREE_CHAT_ID,
-  freeOnePlus: process.env.ALERT_FREE_ONE_PLUS_CHAT_ID,
-  freeTenPlus: process.env.ALERT_FREE_TEN_PLUS_CHAT_ID,
-  live: process.env.ALERT_LIVE_CHAT_ID,
-  liveOnePlus: process.env.ALERT_LIVE_ONE_PLUS_CHAT_ID,
-  liveTenPlus: process.env.ALERT_LIVE_TEN_PLUS_CHAT_ID,
-}
 
 function listOrderedExchanges(deal: Deal) {
   if (deal.exchangePrices.length < 3) {

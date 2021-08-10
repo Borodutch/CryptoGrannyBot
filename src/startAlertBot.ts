@@ -1,12 +1,43 @@
-import { DealModel } from '@/models'
+import { DealModel, findUser, SubscriptionStatus } from '@/models'
 import { alertBot, reportDeal } from '@/helpers/alertBot'
 
 export function startAlertBot() {
   // Errors
   alertBot.catch(console.error)
   // Start bot
-  alertBot.launch().then(() => {
-    console.info(`Bot ${alertBot.botInfo.username} is up and running`)
+  alertBot
+    .launch({
+      allowedUpdates: [
+        'callback_query',
+        'channel_post',
+        'chat_member',
+        'chosen_inline_result',
+        'edited_channel_post',
+        'edited_message',
+        'inline_query',
+        'message',
+        'my_chat_member',
+        'pre_checkout_query',
+        'poll_answer',
+        'poll',
+        'shipping_query',
+      ],
+    })
+    .then(() => {
+      console.info(`Bot ${alertBot.botInfo.username} is up and running`)
+    })
+  // Filter newcomers
+  alertBot.on('chat_member', async (ctx) => {
+    if (ctx.chatMember.new_chat_member.status === 'member') {
+      const user = await findUser(ctx.chatMember.new_chat_member.user.id)
+      if (user.subscriptionStatus === SubscriptionStatus.inactive) {
+        try {
+          await alertBot.telegram.kickChatMember(ctx.chat.id, user.id)
+        } catch (e) {
+          console.error(`Error kicking newcomer ${user.id}`, e.message || e)
+        }
+      }
+    }
   })
 }
 

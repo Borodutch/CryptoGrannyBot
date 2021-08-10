@@ -83,16 +83,22 @@ function checkCentralizedExchanges() {
 }
 
 function checkDecentralizedExchanges() {
-  const symbols = {}
+  const symbols = {} as {
+    [symbol: string]: {
+      [exchange: string]: { close: number; base: string; quote: string }
+    }
+  }
   for (const exchange in dexTickers) {
     const tickers = dexTickers[exchange].filter((t) => !!t)
     for (const ticker of tickers) {
-      const symbol = `${ticker.base}/${ticker.quote}`
+      const symbol = `${ticker.baseReference}/${ticker.quoteReference}`
       if (!symbols[symbol]) {
         symbols[symbol] = {}
       }
       symbols[symbol][exchange] = {
         close: ticker.close,
+        base: ticker.base,
+        quote: ticker.quote,
       }
     }
   }
@@ -110,6 +116,8 @@ function checkDecentralizedExchanges() {
     let highestBid = 0
     let highestExchange: string
     let highestFee: number = 0
+    const base = Object.values(exchangeMap)[0].base
+    const quote = Object.values(exchangeMap)[0].quote
     for (const exchange in exchangeMap) {
       const { close } = exchangeMap[exchange]
       if (close < lowestAsk) {
@@ -128,7 +136,7 @@ function checkDecentralizedExchanges() {
       0.01
     ) {
       potentialArbitrages.push({
-        symbol,
+        symbol: `${base}/${quote}`,
         lowestAsk,
         lowestExchange,
         lowestFee,

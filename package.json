@@ -23,6 +23,7 @@
     "nodemon": "^2.0.12"
   },
   "dependencies": {
+    "@coinranking/exchanges": "^3.63.0",
     "@koa/cors": "^3.1.0",
     "@typegoose/typegoose": "^8.1.1",
     "amala": "^7.0.0",

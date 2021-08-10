@@ -29,9 +29,8 @@ console.log(
 )
 
 // Ticker fetcher
-console.log('Starting ticker fetcher...')
+console.log('Starting centralized ticker fetcher...')
 export const tickers = {}
-export const currencies = {}
 const tickersRefreshLocks = {}
 for (const exchange of Object.values(exchangesMap)) {
   const checkExchange = async () => {
@@ -49,8 +48,6 @@ for (const exchange of Object.values(exchangesMap)) {
         }
       }
       tickers[exchange.id] = filteredTickers
-      // Fetch currencies
-      // currencies[exchange.id] = await exchange.fetchCurrencies()
     } catch (e) {
       console.error(`Could not refresh ${exchange.id} tickers`)
     } finally {
@@ -60,4 +57,4 @@ for (const exchange of Object.values(exchangesMap)) {
   setInterval(checkExchange, 5 * 1000)
   checkExchange()
 }
-console.log(`Ticker fetcher started`)
+console.log(`Centralized ticker fetcher started`)

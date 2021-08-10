@@ -1,6 +1,7 @@
 import { PotentialArbitrage } from '@/models/PotentialArbitrage'
 import { exchangesMap, tickers } from '@/helpers/ccxt'
 import { addDeal } from '@/helpers/addDeal'
+import { dexTickers } from '@/helpers/dex'
 
 export function startArbitrager() {
   console.log('Arbitrager launched')
@@ -8,6 +9,11 @@ export function startArbitrager() {
 }
 
 function checkArbitrage() {
+  checkCentralizedExchanges()
+  checkDecentralizedExchanges()
+}
+
+function checkCentralizedExchanges() {
   const symbols = {}
   for (const exchange in tickers) {
     const exchangeTickers = tickers[exchange]
@@ -73,5 +79,70 @@ function checkArbitrage() {
   }
   for (const potentialArbitrage of potentialArbitrages) {
     addDeal(potentialArbitrage)
+  }
+}
+
+function checkDecentralizedExchanges() {
+  const symbols = {}
+  for (const exchange in dexTickers) {
+    const tickers = dexTickers[exchange].filter((t) => !!t)
+    for (const ticker of tickers) {
+      const symbol = `${ticker.base}/${ticker.quote}`
+      if (!symbols[symbol]) {
+        symbols[symbol] = {}
+      }
+      symbols[symbol][exchange] = {
+        close: ticker.close,
+      }
+    }
+  }
+  for (const symbol in symbols) {
+    if (Object.keys(symbols[symbol]).length < 2) {
+      delete symbols[symbol]
+    }
+  }
+  const potentialArbitrages = [] as PotentialArbitrage[]
+  for (const symbol in symbols) {
+    const exchangeMap = symbols[symbol]
+    let lowestAsk = Infinity
+    let lowestExchange: string
+    let lowestFee: number = 0
+    let highestBid = 0
+    let highestExchange: string
+    let highestFee: number = 0
+    for (const exchange in exchangeMap) {
+      const { close } = exchangeMap[exchange]
+      if (close < lowestAsk) {
+        lowestAsk = close
+        lowestExchange = exchange
+      }
+      if (close > highestBid) {
+        highestBid = close
+        highestExchange = exchange
+      }
+    }
+    const lowestAskWithFee = lowestAsk * (1 + lowestFee)
+    const highestBidWithFee = highestBid * (1 - highestFee)
+    if (
+      ((highestBidWithFee - lowestAskWithFee) / lowestAskWithFee) * 100 >
+      0.01
+    ) {
+      potentialArbitrages.push({
+        symbol,
+        lowestAsk,
+        lowestExchange,
+        lowestFee,
+        highestBid,
+        highestExchange,
+        highestFee,
+        exchangePrices: Object.keys(exchangeMap).map((key) => ({
+          ...exchangeMap[key],
+          name: key,
+        })),
+      })
+    }
+  }
+  for (const potentialArbitrage of potentialArbitrages) {
+    addDeal(potentialArbitrage, true)
   }
 }

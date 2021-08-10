@@ -9,11 +9,14 @@ function listOrderedExchanges(deal: Deal) {
   if (deal.exchangePrices.length < 3) {
     return ''
   }
-  const orderedExchanges = deal.exchangePrices.sort((a, b) => b.ask - a.ask)
+  const orderedExchanges = deal.exchangePrices.sort((a, b) =>
+    !!b.close ? b.close - a.close : b.ask - a.ask
+  )
   return `\n${orderedExchanges
-    .map(
-      (exchange) =>
-        `${exchange.name}, ask: ${exchange.ask}, bid: ${exchange.bid}`
+    .map((exchange) =>
+      exchange.close
+        ? `${exchange.name}, close: ${exchange.close}`
+        : `${exchange.name}, ask: ${exchange.ask}, bid: ${exchange.bid}`
     )
     .join('\n')}`
 }
@@ -63,7 +66,9 @@ async function sendDealToChannel(
     '_'
   )} +${percentageBetweenHighestAndLowest}%${
     +percentageBetweenHighestAndLowest >= 1 ? ' #one_plus' : ''
-  }${+percentageBetweenHighestAndLowest >= 10 ? ' #ten_plus' : ''}
+  }${+percentageBetweenHighestAndLowest >= 10 ? ' #ten_plus' : ''}${
+    deal.isDex ? ' #dex' : ''
+  }
 <b>${deal.buyExchange}</b> (${deal.lowestAsk}) ➡️ <b>${
     deal.sellExchange
   }</b> (${deal.highestBid})

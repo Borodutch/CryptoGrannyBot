@@ -3,10 +3,12 @@ import { prop, getModelForClass } from '@typegoose/typegoose'
 export class ExchangePrices {
   @prop({ required: true })
   name: string
-  @prop({ required: true })
-  ask: number
-  @prop({ required: true })
-  bid: number
+  @prop()
+  ask?: number
+  @prop()
+  bid?: number
+  @prop()
+  close?: number
 }
 
 export class Deal {
@@ -28,6 +30,8 @@ export class Deal {
   exchangePrices: ExchangePrices[]
   @prop({ required: true, default: false, index: true })
   sentToFreeChannel: boolean
+  @prop({ required: true, default: false })
+  isDex: boolean
 }
 
 export const DealModel = getModelForClass(Deal, {

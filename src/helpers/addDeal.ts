@@ -2,7 +2,10 @@ import { DealModel } from '@/models'
 import { PotentialArbitrage } from '@/models/PotentialArbitrage'
 import { reportDeal } from '@/helpers/alertBot'
 
-export async function addDeal(potentialArbitrage: PotentialArbitrage) {
+export async function addDeal(
+  potentialArbitrage: PotentialArbitrage,
+  isDex = false
+) {
   const anHourAgo = new Date()
   anHourAgo.setHours(anHourAgo.getHours() - 1)
   const previousDeal = await DealModel.findOne({
@@ -23,6 +26,7 @@ export async function addDeal(potentialArbitrage: PotentialArbitrage) {
     exchangePrices: potentialArbitrage.exchangePrices,
     lowestFee: potentialArbitrage.lowestFee,
     highestFee: potentialArbitrage.highestFee,
+    isDex,
   })
   return reportDeal(deal, false)
 }

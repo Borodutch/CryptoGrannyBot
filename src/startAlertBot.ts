@@ -1,5 +1,6 @@
 import { DealModel, findUser, SubscriptionStatus } from '@/models'
 import { alertBot, reportDeal } from '@/helpers/alertBot'
+import { channels } from './helpers/channels'
 
 export function startAlertBot() {
   // Errors
@@ -28,6 +29,14 @@ export function startAlertBot() {
     })
   // Filter newcomers
   alertBot.on('chat_member', async (ctx) => {
+    const liveChannels = [
+      channels.live,
+      channels.liveOnePlus,
+      channels.liveTenPlus,
+    ].map((v) => +v)
+    if (!liveChannels.includes(ctx.chat.id)) {
+      return
+    }
     if (ctx.chatMember.new_chat_member.status === 'member') {
       const user = await findUser(ctx.chatMember.new_chat_member.user.id)
       if (user.subscriptionStatus === SubscriptionStatus.inactive) {

@@ -133,7 +133,9 @@ function checkDecentralizedExchanges() {
     const highestBidWithFee = highestBid * (1 - highestFee)
     if (
       ((highestBidWithFee - lowestAskWithFee) / lowestAskWithFee) * 100 >
-      0.01
+        0.01 &&
+      !!base &&
+      !!quote
     ) {
       potentialArbitrages.push({
         symbol: `${base}/${quote}`,

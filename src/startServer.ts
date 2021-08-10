@@ -23,8 +23,8 @@ export async function startServer() {
     app.use(router.routes())
     app.use(router.allowedMethods())
     // Start rest
-    app.listen(1345).on('listening', () => {
-      console.log('HTTP is listening on 1345')
+    app.listen(1347).on('listening', () => {
+      console.log('HTTP is listening on 1347')
     })
   } catch (err) {
     console.log('Koa app starting error: ', err)

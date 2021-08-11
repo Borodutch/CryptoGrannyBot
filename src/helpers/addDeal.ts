@@ -26,6 +26,8 @@ export async function addDeal(
     exchangePrices: potentialArbitrage.exchangePrices,
     lowestFee: potentialArbitrage.lowestFee,
     highestFee: potentialArbitrage.highestFee,
+    buyExchangeLink: potentialArbitrage.buyExchangeLink,
+    sellExchangeLink: potentialArbitrage.sellExchangeLink,
     isDex,
   })
   return reportDeal(deal, false)

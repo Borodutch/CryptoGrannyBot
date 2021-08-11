@@ -32,6 +32,10 @@ export class Deal {
   sentToFreeChannel: boolean
   @prop({ required: true, default: false })
   isDex: boolean
+  @prop()
+  buyExchangeLink?: string
+  @prop()
+  sellExchangeLink?: string
 }
 
 export const DealModel = getModelForClass(Deal, {

@@ -9,4 +9,6 @@ export interface PotentialArbitrage {
   highestExchange: string
   highestFee: number
   exchangePrices: ExchangePrices[]
+  buyExchangeLink?: string
+  sellExchangeLink?: string
 }

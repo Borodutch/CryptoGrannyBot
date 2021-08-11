@@ -3,9 +3,9 @@ import * as exchanges from '@coinranking/exchanges'
 export const dexTickers = {}
 
 const exchangesMap = {
+  uniswap2: new exchanges.Uniswap2(),
   uniswap3: new exchanges.Uniswap3(),
   oneInch: new exchanges['1inch'](),
-  uniswap2: new exchanges.Uniswap2(),
   sushiswap: new exchanges.Sushiswap(),
   honeyswap: new exchanges.Honeyswap(),
 }

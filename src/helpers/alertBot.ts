@@ -69,11 +69,20 @@ async function sendDealToChannel(
   }${+percentageBetweenHighestAndLowest >= 10 ? ' #ten_plus' : ''}${
     deal.isDex ? ' #dex' : ''
   }
-<b>${deal.buyExchange}</b> (${deal.lowestAsk}) ➡️ <b>${
-    deal.sellExchange
+<b>${
+    deal.buyExchangeLink
+      ? `<a href="${deal.buyExchangeLink}">${deal.buyExchange}</a>`
+      : deal.buyExchange
+  }</b> (${deal.lowestAsk}) ➡️ <b>${
+    deal.sellExchangeLink
+      ? `<a href="${deal.sellExchangeLink}">${deal.sellExchange}</a>`
+      : deal.sellExchange
   }</b> (${deal.highestBid})
 ${listOrderedExchanges(deal)}`
-  const options = { parse_mode: 'HTML' } as ExtraReplyMessage
+  const options = {
+    parse_mode: 'HTML',
+    disable_web_page_preview: true,
+  } as ExtraReplyMessage
   if (free) {
     options.reply_markup = {
       inline_keyboard: [

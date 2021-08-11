@@ -116,6 +116,8 @@ function checkDecentralizedExchanges() {
     let highestBid = 0
     let highestExchange: string
     let highestFee: number = 0
+    const baseAddress = symbol.split('/')[0]
+    const quoteAddress = symbol.split('/')[1]
     const base = Object.values(exchangeMap)[0].base
     const quote = Object.values(exchangeMap)[0].quote
     for (const exchange in exchangeMap) {
@@ -149,10 +151,50 @@ function checkDecentralizedExchanges() {
           ...exchangeMap[key],
           name: key,
         })),
+        buyExchangeLink: exchangeLink(
+          lowestExchange,
+          baseAddress,
+          quoteAddress,
+          'buy'
+        ),
+        sellExchangeLink: exchangeLink(
+          highestExchange,
+          baseAddress,
+          quoteAddress,
+          'sell'
+        ),
       })
     }
   }
   for (const potentialArbitrage of potentialArbitrages) {
     addDeal(potentialArbitrage, true)
   }
+}
+
+function exchangeLink(
+  exchange: string,
+  baseAddress: string,
+  quoteAddress: string,
+  buyOrSell: 'buy' | 'sell'
+) {
+  if (exchange === 'uniswap2') {
+    return `https://app.uniswap.org/#/swap?use=v2&inputCurrency=${
+      buyOrSell === 'buy' ? quoteAddress : baseAddress
+    }&outputCurrency=${buyOrSell === 'buy' ? baseAddress : quoteAddress}`
+  } else if (exchange === 'uniswap3') {
+    return `https://app.uniswap.org/#/swap?use=v3&inputCurrency=${
+      buyOrSell === 'buy' ? quoteAddress : baseAddress
+    }&outputCurrency=${buyOrSell === 'buy' ? baseAddress : quoteAddress}`
+  } else if (exchange === 'oneInch') {
+    return `https://app.1inch.io/#/1/swap/${
+      buyOrSell === 'buy' ? quoteAddress : baseAddress
+    }/${buyOrSell === 'buy' ? baseAddress : quoteAddress}`
+  } else if (exchange === 'sushiswap') {
+    return `https://app.sushi.com/swap?inputCurrency=${
+      buyOrSell === 'buy' ? quoteAddress : baseAddress
+    }&outputCurrency=${buyOrSell === 'buy' ? baseAddress : quoteAddress}`
+  } else if (exchange === 'honeyswap') {
+    return 'https://app.honeyswap.org/#/swap'
+  }
+  return
 }

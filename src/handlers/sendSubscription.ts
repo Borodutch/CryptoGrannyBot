@@ -12,11 +12,14 @@ import I18n from 'telegraf-i18n'
 export async function sendSubscriptionToUser(user: User) {
   const localization = i18n.createContext(user.language, {}) as any as I18n
   try {
-    await Promise.all(
-      Object.values(channels).map((channelId) =>
+    await Promise.all([
+      ...Object.values(channels.en).map((channelId) =>
         alertBot.telegram.unbanChatMember(channelId, user.id)
-      )
-    )
+      ),
+      ...Object.values(channels.ru).map((channelId) =>
+        alertBot.telegram.unbanChatMember(channelId, user.id)
+      ),
+    ])
   } catch (e) {
     console.error(`Cannot unban user ${user.id}`, e.message || e)
   }
@@ -49,11 +52,14 @@ export async function sendSubscription(ctx: Context) {
     ctx.dbuser.subscriptionStatus === SubscriptionStatus.active
   ) {
     try {
-      await Promise.all(
-        Object.values(channels).map((channelId) =>
+      await Promise.all([
+        ...Object.values(channels.en).map((channelId) =>
           alertBot.telegram.unbanChatMember(channelId, ctx.from.id)
-        )
-      )
+        ),
+        ...Object.values(channels.ru).map((channelId) =>
+          alertBot.telegram.unbanChatMember(channelId, ctx.from.id)
+        ),
+      ])
     } catch (e) {
       console.error(`Cannot unban user ${ctx.from.id}`, e.message || e)
     }
@@ -78,19 +84,19 @@ export async function sendSubscription(ctx: Context) {
 async function invitesKeyboard(user: User, i18n: I18N) {
   const unixTimestampInTenMinutes = Math.floor(Date.now() / 1000) + 600
   const mainInvite = await alertBot.telegram.createChatInviteLink(
-    channels.live,
+    channels[user.language].live,
     {
       expire_date: unixTimestampInTenMinutes,
     }
   )
   const onePlusInvite = await alertBot.telegram.createChatInviteLink(
-    channels.liveOnePlus,
+    channels[user.language].liveOnePlus,
     {
       expire_date: unixTimestampInTenMinutes,
     }
   )
   const tenPlusInvite = await alertBot.telegram.createChatInviteLink(
-    channels.liveTenPlus,
+    channels[user.language].liveTenPlus,
     {
       expire_date: unixTimestampInTenMinutes,
     }

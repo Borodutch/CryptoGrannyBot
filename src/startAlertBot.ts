@@ -30,9 +30,12 @@ export function startAlertBot() {
   // Filter newcomers
   alertBot.on('chat_member', async (ctx) => {
     const liveChannels = [
-      channels.live,
-      channels.liveOnePlus,
-      channels.liveTenPlus,
+      channels.en.live,
+      channels.en.liveOnePlus,
+      channels.en.liveTenPlus,
+      channels.ru.live,
+      channels.ru.liveOnePlus,
+      channels.ru.liveTenPlus,
     ].map((v) => +v)
     if (!liveChannels.includes(ctx.chat.id)) {
       return

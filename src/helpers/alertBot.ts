@@ -28,30 +28,36 @@ export async function reportDeal(deal: Deal, free: boolean) {
     ((highestBidWithFee - lowestAskWithFee) / lowestAskWithFee) *
     100
   ).toFixed(2)
-  // Send to the main channel
-  sendDealToChannel(
-    deal,
-    free,
-    free ? channels.free : channels.live,
-    percentageBetweenHighestAndLowest
-  )
-  // Send to the one plus channel
-  if (+percentageBetweenHighestAndLowest >= 1) {
+  const languages = ['ru', 'en']
+  for (const language of languages) {
+    // Send to the main channel
     sendDealToChannel(
       deal,
       free,
-      free ? channels.freeOnePlus : channels.liveOnePlus,
-      percentageBetweenHighestAndLowest
+      free ? channels[language].free : channels[language].live,
+      percentageBetweenHighestAndLowest,
+      language
     )
-  }
-  // Send to the ten plus channel
-  if (+percentageBetweenHighestAndLowest >= 10) {
-    sendDealToChannel(
-      deal,
-      free,
-      free ? channels.freeTenPlus : channels.liveTenPlus,
-      percentageBetweenHighestAndLowest
-    )
+    // Send to the one plus channel
+    if (+percentageBetweenHighestAndLowest >= 1) {
+      sendDealToChannel(
+        deal,
+        free,
+        free ? channels[language].freeOnePlus : channels[language].liveOnePlus,
+        percentageBetweenHighestAndLowest,
+        language
+      )
+    }
+    // Send to the ten plus channel
+    if (+percentageBetweenHighestAndLowest >= 10) {
+      sendDealToChannel(
+        deal,
+        free,
+        free ? channels[language].freeTenPlus : channels[language].liveTenPlus,
+        percentageBetweenHighestAndLowest,
+        language
+      )
+    }
   }
 }
 
@@ -59,16 +65,24 @@ async function sendDealToChannel(
   deal: Deal,
   free: boolean,
   channel: string,
-  percentageBetweenHighestAndLowest: string
+  percentageBetweenHighestAndLowest: string,
+  language: string
 ) {
-  const message = `${free ? '<b>1 hour ago:</b>\n' : ''}#${deal.pair.replace(
-    '/',
-    '_'
-  )} +${percentageBetweenHighestAndLowest}%${
-    +percentageBetweenHighestAndLowest >= 1 ? ' #one_plus' : ''
-  }${+percentageBetweenHighestAndLowest >= 10 ? ' #ten_plus' : ''}${
-    deal.isDex ? ' #dex' : ''
-  }
+  const message = `${
+    free ? `<b>${language === 'en' ? '1 hour ago' : '1 час назад'}:</b>\n` : ''
+  }#${deal.pair.replace('/', '_')} +${percentageBetweenHighestAndLowest}%${
+    +percentageBetweenHighestAndLowest >= 1
+      ? language === 'en'
+        ? ' #one_plus'
+        : ' #один_плюс'
+      : ''
+  }${
+    +percentageBetweenHighestAndLowest >= 10
+      ? language === 'en'
+        ? ' #ten_plus'
+        : ' #десять_плюс'
+      : ''
+  }${deal.isDex ? (language === 'en' ? ' #dex' : ' #декс') : ''}
 <b>${
     deal.buyExchangeLink
       ? `<a href="${deal.buyExchangeLink}">${deal.buyExchange}</a>`
@@ -88,8 +102,14 @@ ${listOrderedExchanges(deal)}`
       inline_keyboard: [
         [
           {
-            text: 'Remove 1 hour delay',
-            url: 'https://t.me/CryptoGrannyBot?start=en',
+            text:
+              language === 'en'
+                ? 'Remove 1 hour delay'
+                : 'Убрать часовую задержку',
+            url:
+              language === 'en'
+                ? 'https://t.me/CryptoGrannyBot?start=en'
+                : 'https://t.me/CryptoGrannyBot?start=ru',
           },
         ],
       ],

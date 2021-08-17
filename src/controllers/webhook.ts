@@ -35,8 +35,15 @@ export default class WebhookController {
         await user.save()
         try {
           await Promise.all(
-            [channels.live, channels.liveOnePlus, channels.liveTenPlus].map(
-              (channel) => alertBot.telegram.kickChatMember(channel, userId)
+            [
+              channels.en.live,
+              channels.en.liveOnePlus,
+              channels.en.liveTenPlus,
+              channels.ru.live,
+              channels.ru.liveOnePlus,
+              channels.ru.liveTenPlus,
+            ].map((channel) =>
+              alertBot.telegram.kickChatMember(channel, userId)
             )
           )
         } catch (e) {

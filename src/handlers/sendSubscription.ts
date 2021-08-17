@@ -120,12 +120,12 @@ async function invitesKeyboard(user: User, i18n: I18N) {
       },
     ])
   }
-  keyboard.push([{ text: 'Crypto Granny Live', url: mainInvite.invite_link }])
+  keyboard.push([{ text: i18n.t('live'), url: mainInvite.invite_link }])
   keyboard.push([
-    { text: 'Crypto Granny Live #one_plus', url: onePlusInvite.invite_link },
+    { text: i18n.t('live_one_plus'), url: onePlusInvite.invite_link },
   ])
   keyboard.push([
-    { text: 'Crypto Granny Live #ten_plus', url: tenPlusInvite.invite_link },
+    { text: i18n.t('live_ten_plus'), url: tenPlusInvite.invite_link },
   ])
   return keyboard
 }

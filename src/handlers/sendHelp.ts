@@ -14,6 +14,13 @@ export async function sendHelp(ctx: Context) {
     const anyI18N = ctx.i18n as any
     anyI18N.locale('en')
   }
+  if (startPayload && startPayload === 'ru') {
+    const user = ctx.dbuser
+    user.language = 'ru'
+    await user.save()
+    const anyI18N = ctx.i18n as any
+    anyI18N.locale('ru')
+  }
   return ctx.replyWithHTML(ctx.i18n.t('help'), {
     reply_markup: { inline_keyboard: helpKeyboard(ctx) },
   })

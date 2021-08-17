@@ -25,5 +25,7 @@ montly_subscription_button: $50/месяц
 yearly_subscription_button: $400/год
 lifetime_subscription_button: $1800 один раз
 live: Крипто Бабуля Вживую
-live_one_plus: Крипто Бабуля Вживую #один_плюс
-live_ten_plus: Крипто Бабуля Вживую #десять_плюс
+live_one_plus: |
+  Крипто Бабуля Вживую #один_плюс
+live_ten_plus: |
+  Крипто Бабуля Вживую #десять_плюс

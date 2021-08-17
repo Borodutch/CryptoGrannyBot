@@ -25,5 +25,7 @@ montly_subscription_button: $50/month
 yearly_subscription_button: $400/year
 lifetime_subscription_button: $1800 once
 live: Crypto Granny Live
-live_one_plus: Crypto Granny Live #one_plus
-live_ten_plus: Crypto Granny Live #ten_plus
+live_one_plus: |
+  Crypto Granny Live #one_plus
+live_ten_plus: |
+  Crypto Granny Live #ten_plus

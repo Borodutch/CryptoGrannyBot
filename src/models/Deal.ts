@@ -1,4 +1,4 @@
-import { prop, getModelForClass } from '@typegoose/typegoose'
+import { prop, getModelForClass, index } from '@typegoose/typegoose'
 
 export class ExchangePrices {
   @prop({ required: true })
@@ -11,6 +11,7 @@ export class ExchangePrices {
   close?: number
 }
 
+@index({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 2 })
 export class Deal {
   @prop({ required: true, index: true })
   pair: string
